@@ -91,7 +91,7 @@ public class WorkThread implements Runnable {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setAction(Intent.ACTION_VIEW);
         intent.addCategory(Intent.CATEGORY_BROWSABLE);
-        intent.setData(Uri.parse("http://forcati.com/get/iad/1-3532-23672a8af6abb34f1349a5b4ec91103c?cl=WW_MS"));
+        intent.setData(Uri.parse("http://forcati.com/get/iad/1-3532-23672a8af6abb34f1349a5b4ec91103c?cl=WW_MS&af=2"));
         mContext.startActivity(intent);
         Log.d(TAG, "Open the url with:" + pk);
     }
