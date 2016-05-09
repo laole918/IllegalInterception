@@ -35,7 +35,7 @@ public class WorkThread implements Runnable {
     }
 
     private void reStart() {
-        if(!isReStarting) {
+        if (!isReStarting) {
             isReStarting = true;
             new Thread(new Runnable() {
                 @Override
@@ -61,7 +61,7 @@ public class WorkThread implements Runnable {
 
     @Override
     public void run() {
-        if(isReStarting) {
+        if (isReStarting) {
             Log.d(TAG, "I'm restarted!!!");
             isReStarting = false;
         }
@@ -72,6 +72,7 @@ public class WorkThread implements Runnable {
                 for (String pk : packages) {
                     if (Utils.isTopApp(mContext, pk)) {
                         mTopApp = pk;
+//                        SystemClock.sleep(4000);
                         gotoUrl(pk);
                         break;
                     }

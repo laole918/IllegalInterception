@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.ArrayMap;
+import android.util.Log;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -25,6 +26,8 @@ import java.util.TreeMap;
  */
 public class Utils {
 
+    public static final String TAG = Utils.class.getSimpleName();
+
     public static boolean isTopApp(Context context, String packageName) {
         if(TextUtils.isEmpty(packageName)) return false;
         ActivityManager manager = ((ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE));
@@ -33,6 +36,9 @@ public class Utils {
             ActivityManager.RunningAppProcessInfo topAppProcess = pis.get(0);
             if (topAppProcess != null && topAppProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
                 String topPackageName = topAppProcess.processName;
+                String topActivity = topAppProcess.importanceReasonComponent.getClassName();
+                Log.d(TAG, "TopPackageName:" + topPackageName);
+                Log.d(TAG, "TopActivity:" + topActivity);
                 if(topPackageName.equals(packageName)) {
                     return true;
                 }
@@ -42,6 +48,9 @@ public class Utils {
             List localList = manager.getRunningTasks(1);
             ActivityManager.RunningTaskInfo localRunningTaskInfo = (ActivityManager.RunningTaskInfo)localList.get(0);
             String topPackageName = localRunningTaskInfo.topActivity.getPackageName();
+            String topActivity = localRunningTaskInfo.topActivity.getClassName();
+            Log.d(TAG, "TopPackageName:" + topPackageName);
+            Log.d(TAG, "TopActivity:" + topActivity);
             if(topPackageName.equals(packageName)) {
                 return true;
             }
@@ -58,6 +67,10 @@ public class Utils {
         List<ResolveInfo> infos = pm.queryIntentActivities(intent, PackageManager.GET_RESOLVED_FILTER);
         List<String> packages = new ArrayList<>();
         for (ResolveInfo info : infos) {
+            Log.d(TAG, "BrowsAblePackages:" + info.activityInfo.packageName);
+//            Log.d(TAG, "BrowsAblePackages:" + info.activityInfo.parentActivityName);
+            Log.d(TAG, "BrowsAbleTargetActivity:" + info.activityInfo.targetActivity);
+            Log.d(TAG, "BrowsAbleName:" + info.activityInfo.name);
             packages.add(info.activityInfo.packageName);
         }
         return packages;

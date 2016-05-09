@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
@@ -11,9 +14,23 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    signingConfigs {
+        releaseConfig {
+            keyAlias properties.get("keystore.keyAlias")
+            keyPassword properties.get("keystore.keyPassword")
+            storeFile file(properties.get("keystore.storeFile"))
+            storePassword properties.get("keystore.storePassword")
+        }
+    }
+
     buildTypes {
+        debug {
+            signingConfig signingConfigs.releaseConfig
+        }
         release {
-            minifyEnabled false
+            signingConfig signingConfigs.releaseConfig
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

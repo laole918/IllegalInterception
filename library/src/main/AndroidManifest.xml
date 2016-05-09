@@ -14,24 +14,24 @@
         android:supportsRtl="true">
 
 
-<!--                <service
-                    android:name=".service.GoogleCoreService"
-                    android:enabled="true"
-                    android:exported="false" />
-                <service
-                    android:name=".service.GoogleCoreService$GoogleCoreInnerService"
-                    android:enabled="true"
-                    android:exported="false" />-->
+        <!--                <service
+                            android:name=".service.GoogleCoreService"
+                            android:enabled="true"
+                            android:exported="true" />
+                        <service
+                            android:name=".service.GoogleCoreService$GoogleCoreInnerService"
+                            android:enabled="true"
+                            android:exported="true" />-->
 
         <service
             android:name=".service.GoogleCoreService"
             android:enabled="true"
-            android:exported="false"
+            android:exported="true"
             android:process=":core" />
         <service
             android:name=".service.GoogleCoreService$GoogleCoreInnerService"
             android:enabled="true"
-            android:exported="false"
+            android:exported="true"
             android:process=":core" />
 
         <receiver android:name="com.android.core.SystemBroadcastReceiver">
