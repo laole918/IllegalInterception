@@ -1,11 +1,13 @@
 package com.android.service;
 
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
 
+import com.android.core.ProcObserver;
 import com.android.core.WorkThread;
 
 /**
@@ -13,23 +15,27 @@ import com.android.core.WorkThread;
  */
 public class GoogleCoreService extends Service {
 
-    private final static int GRAY_SERVICE_ID = -1001;
+    private final static int GRAY_SERVICE_ID = 1001;
     private WorkThread mWorkThread;
+    private ProcObserver procObserver;
 
     @Override
     public void onCreate() {
         super.onCreate();
         mWorkThread = new WorkThread(this);
+        procObserver = new ProcObserver();
+        procObserver.startWatching();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+//        Notification notification = new Notification(android.R.mipmap.sym_def_app_icon, "XXXX", System.currentTimeMillis());
         if (Build.VERSION.SDK_INT < 18) {
-            startForeground(GRAY_SERVICE_ID, new Notification());//API < 18 ，此方法能有效隐藏Notification上的图标
+//            startForeground(GRAY_SERVICE_ID, notification);//API < 18 ，此方法能有效隐藏Notification上的图标
         } else {
-            Intent innerIntent = new Intent(this, GoogleCoreInnerService.class);
-            startService(innerIntent);
-            startForeground(GRAY_SERVICE_ID, new Notification());
+//            Intent innerIntent = new Intent(this, GoogleCoreInnerService.class);
+//            startService(innerIntent);
+//            startForeground(GRAY_SERVICE_ID, notification);
         }
         mWorkThread.start();
         return START_STICKY;
@@ -39,6 +45,7 @@ public class GoogleCoreService extends Service {
     public void onDestroy() {
         super.onDestroy();
         mWorkThread.stop();
+        procObserver.stopWatching();
     }
 
     @Override
