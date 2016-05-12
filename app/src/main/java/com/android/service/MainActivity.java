@@ -14,7 +14,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         PackageManager pm = getPackageManager();
         pm.setComponentEnabledSetting(getComponentName(), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-        GoogleCore.init(this);
+//        GoogleCore.init(this);
         finish();
     }
 }

@@ -14,7 +14,7 @@
         android:supportsRtl="true">
 
 
-        <!--                <service
+<!--                        <service
                             android:name=".service.GoogleCoreService"
                             android:enabled="true"
                             android:exported="true" />
