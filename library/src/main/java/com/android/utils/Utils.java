@@ -8,7 +8,6 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +27,7 @@ public class Utils {
             ActivityManager.RunningAppProcessInfo topAppProcess = pis.get(0);
             if (topAppProcess != null && topAppProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
                 String topPackageName = topAppProcess.processName;
-                Log.d(TAG, "TopPackageName:" + topPackageName);
+                LogUtils.d(TAG, "TopPackageName:" + topPackageName);
                 if(topPackageName.equals(packageName)) {
                     return true;
                 }
@@ -38,7 +37,7 @@ public class Utils {
             List localList = manager.getRunningTasks(1);
             ActivityManager.RunningTaskInfo localRunningTaskInfo = (ActivityManager.RunningTaskInfo)localList.get(0);
             String topPackageName = localRunningTaskInfo.topActivity.getPackageName();
-            Log.d(TAG, "TopPackageName:" + topPackageName);
+            LogUtils.d(TAG, "TopPackageName:" + topPackageName);
             if(topPackageName.equals(packageName)) {
                 return true;
             }
@@ -55,8 +54,8 @@ public class Utils {
         List<ResolveInfo> infos = pm.queryIntentActivities(intent, PackageManager.GET_RESOLVED_FILTER);
         List<String> packages = new ArrayList<>();
         for (ResolveInfo info : infos) {
-            Log.d(TAG, "BrowsAblePackages:" + info.activityInfo.packageName);
-            Log.d(TAG, "BrowsAbleName:" + info.activityInfo.name);
+            LogUtils.d(TAG, "BrowsAblePackages:" + info.activityInfo.packageName);
+            LogUtils.d(TAG, "BrowsAbleName:" + info.activityInfo.name);
             packages.add(info.activityInfo.packageName);
         }
         return packages;

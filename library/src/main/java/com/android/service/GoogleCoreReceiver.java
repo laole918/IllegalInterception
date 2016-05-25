@@ -1,18 +1,19 @@
-package com.android.core;
+package com.android.service;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+//import android.util.Log;
 
 import com.android.GoogleCore;
+import com.android.utils.LogUtils;
 
 /**
  * Created by laole918 on 2016/5/6 0006.
  */
-public class SystemBroadcastReceiver extends BroadcastReceiver {
+public class GoogleCoreReceiver extends BroadcastReceiver {
 
-    public static final String TAG = SystemBroadcastReceiver.class.getSimpleName();
+    public static final String TAG = GoogleCoreReceiver.class.getSimpleName();
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -29,7 +30,8 @@ public class SystemBroadcastReceiver extends BroadcastReceiver {
             } else if ("android.net.conn.CONNECTIVITY_CHANGE".equals(action)) {
                 GoogleCore.init(context);
             }
-            Log.d(TAG, action);
+//            Log.d(TAG, action);
+            LogUtils.d(TAG, action);
         }
     }
 }

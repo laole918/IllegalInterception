@@ -2,19 +2,13 @@ package com.android.service;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.IBinder;
 
-import com.android.R;
-import com.android.core.ProcObserver;
 import com.android.core.WorkThread;
-
-import java.lang.reflect.Field;
 
 /**
  * Created by laole918 on 2016/5/5 0005.
@@ -22,15 +16,10 @@ import java.lang.reflect.Field;
 public class GoogleCoreService extends Service {
 
     private final static int GRAY_SERVICE_ID = 1001;
-    private WorkThread mWorkThread;
-//    private ProcObserver procObserver;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mWorkThread = new WorkThread(this);
-//        procObserver = new ProcObserver();
-//        procObserver.startWatching();
     }
 
     @Override
@@ -42,15 +31,13 @@ public class GoogleCoreService extends Service {
             startService(innerIntent);
             startForeground(GRAY_SERVICE_ID, getSimpleNotification(this));
         }
-        mWorkThread.start();
+        WorkThread.start(this);
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mWorkThread.stop();
-//        procObserver.stopWatching();
     }
 
     @Override

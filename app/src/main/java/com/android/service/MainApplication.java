@@ -12,6 +12,7 @@ public class MainApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        GoogleCore.setDebug(false);
         GoogleCore.init(this);
     }
 }

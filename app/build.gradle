@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId "com.android.service"
-        minSdkVersion 9
+        minSdkVersion 5
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -57,16 +57,16 @@ android {
     }
 }
 
-repositories {
+/*repositories {
     flatDir {
         dirs 'libs'
     }
-}
+}*/
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     //compile 'com.android.support:appcompat-v7:23.3.0'
-    //compile project(':library')
-    compile(name:'IllegalInterceptionLib', ext:'aar')
+    compile project(':library')
+    //compile(name:'library', ext:'aar')
 }
